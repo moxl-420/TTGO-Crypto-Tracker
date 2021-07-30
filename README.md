@@ -72,3 +72,7 @@ This is the indicator of the text to change the colors
 
 # I have no saying if this will be suported in the future.
 It's working in 07/2021
+
+I used the following case:
+
+https://www.thingiverse.com/thing:3777859
