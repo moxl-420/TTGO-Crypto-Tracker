@@ -97,7 +97,7 @@ unsigned long timecalctimer = 60000; //1 sec= 1000 - 1Min = 60000
 
 //Week Days
 String weekDays[7]={"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-
+String months[12]={"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 /***************************************************************************************
 **                         Setup
 ***************************************************************************************/
