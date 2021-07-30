@@ -110,7 +110,7 @@ void setup(){
 
 Serial.println("------------------------------------------------------------");
 Serial.println("Moxl"); 
-
+Serial.println("Crypto Tracker + Clock");
 Serial.println("------------------------------------------------------------");
 Serial.println("Setup started");
 Serial.println("setting up screen");
