@@ -22,9 +22,9 @@ Watch the following video from 2:30 to install arduino IDE for TTGO T-display
 https://youtu.be/b8254--ibmM?t=153
 
 *Following libraries should be installed from Arduino IDE
-TFT_eSPI
-NTPClient
-esp32
+-TFT_eSPI
+-NTPClient
+-esp32
 
 
 # I have no saying if this will be suported in the future.
