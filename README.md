@@ -27,19 +27,14 @@ https://youtu.be/b8254--ibmM?t=153
 -esp32
 
 # Adjust the timezone:
-
+```C++
   // Set offset time in seconds to adjust for your timezone, for example:
-  
   // GMT +1 = 3600
-  
   // GMT +8 = 28800
-  
   // GMT -1 = -3600
-  
   // GMT 0 = 0
-  
   timeClient.setTimeOffset(7200);
-  
+  ``` 
   # Change the text Color: 
   
   These are all the possible colors below:
