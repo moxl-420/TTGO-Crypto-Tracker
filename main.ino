@@ -4,13 +4,10 @@
 /*
 Time getting and displaying:
 https://randomnerdtutorials.com/esp8266-nodemcu-date-time-ntp-client-server-arduino/
-
 HTTPclient
 https://github.com/espressif/arduino-esp32/blob/master/libraries/HTTPClient/examples/BasicHttpClient/BasicHttpClient.ino
-
 Market
 https://documenter.getpostman.com/view/4021156/SVtWvmVu
-
 */
 /***************************************************************************************
 **                        Help
@@ -89,15 +86,22 @@ NTPClient timeClient(ntpUDP, "3.pool.ntp.org", 3600, 60000);
 **                         Variables
 ***************************************************************************************/
 //crypto tracker
-String ticker;
-String ticker2;
-unsigned long timer;
-unsigned long timepreviouscalc;
-unsigned long timecalctimer = 60000; //1 sec= 1000 - 1Min = 60000
+      String ticker;
+      String ticker2;
+      unsigned long timer;
+      unsigned long timepreviouscalc;
+      unsigned long timecalctimer = 60000; //1 sec= 1000 - 1Min = 60000
+      
+      unsigned long timer2;
+      unsigned long timepreviouscalc2;
+      unsigned long timecalctimer2 = 10000; //1 sec= 1000 - 1Min = 60000
 
 //Week Days
-String weekDays[7]={"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-String months[12]={"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+      String weekDays[7]={"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+      String months[12]={"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+      String i;
+      String weekDay;
+      String currentDate;
 /***************************************************************************************
 **                         Setup
 ***************************************************************************************/
@@ -158,7 +162,7 @@ Serial.println("Connecting to WiFi:");
   timeClient.setTimeOffset(7200);
   
 // ------------------------------------------------------------
-//      --> Fetch BTC data
+//      --> Fetch BTC data + display screen
 // ------------------------------------------------------------
 getPrice();
 getPrice2();
@@ -187,55 +191,80 @@ tft.setTextColor(TFT_GREEN, TFT_BLACK); // Note: the new fonts do not draw the b
 void loop() {
 
 
-      tft.fillScreen(TFT_BLACK);
+   
       timeClient.update();
       timer = millis();
+      timer2 = millis();
     
-      //get data only once every x seconds/minutes
+   //get data only once every 1 minute
       if(timer >= (timepreviouscalc + timecalctimer)== true){
+        Serial.print("--> Starting loop 1 at ");
+        Serial.println(i);
+        timepreviouscalc = millis();
         getPrice();
         getPrice2();
-        };
-    
-      
-      
-      tft.setTextColor(TFT_SILVER, TFT_BLACK);
+        
+       }
+
+    //Display Screen every 10 seconds
+      if(timer2 >= (timepreviouscalc2 + timecalctimer2)== true){
+        Serial.print("--> Starting loop 2 at ");
+        Serial.println(i);
+        timepreviouscalc2 = millis();
+        printScreen();
+        
+       }
+           
    //Get & Print time
-      tft.setTextFont(4);
-      String i = timeClient.getFormattedTime();
-      tft.setTextDatum(TC_DATUM);
-      tft.drawString(i, 120, 2);
-
-
+      i = timeClient.getFormattedTime();
       
    //Get weekday and print to screen
-      tft.setTextFont(2);
-      String weekDay = weekDays[timeClient.getDay()];
-      tft.drawString(weekDay, 60, 40);
-
-
-    //Get a date structure
+      
+      weekDay = weekDays[timeClient.getDay()];
+      
+   //Get a date structure
         unsigned long epochTime = timeClient.getEpochTime();
         struct tm *ptm = gmtime ((time_t *)&epochTime); 
         int monthDay = ptm->tm_mday;
         int currentMonth = ptm->tm_mon+1;
         String currentMonthName = months[currentMonth-1];
         //Print complete date
-        String currentDate = String(monthDay) + " - " + String(currentMonth);
-        tft.drawString(currentDate, 180, 40);
+        currentDate = String(monthDay) + " - " + String(currentMonth);
         
+// ------------------------------------------------------------
+//      --> exit loop
+// ------------------------------------------------------------    
+
+}
+
+// ------------------------------------------------------------
+//      --> print screen
+// ------------------------------------------------------------  
+
+void printScreen(){
+      tft.fillScreen(TFT_BLACK);
+    //Print Clock
+    
+      tft.setTextColor(TFT_SILVER, TFT_BLACK);
+      tft.setTextFont(4);
+      tft.setTextDatum(TC_DATUM);
+      tft.drawString(i, 120, 2);
+      
+    //Get weekday and print to screen
+      tft.setTextFont(2);
+      tft.drawString(weekDay, 60, 40);
+      
+    //Print complete date
+      tft.drawString(currentDate, 180, 40);
+      
     //Print cryptoprice
         tft.setTextColor(TFT_MAROON, TFT_BLACK);
         tft.drawString(ticker, 120, 75);
         tft.drawString(ticker2, 120, 105);
-// ------------------------------------------------------------
-//      --> exit loop
-// ------------------------------------------------------------    
-  delay(2000);
-}
+  }
 
 // ------------------------------------------------------------
-//      --> fetch btc
+//      --> fetch crypto 1
 // ------------------------------------------------------------  
 
 void getPrice(){
@@ -265,6 +294,9 @@ void getPrice(){
       }
 http.end();
 }
+// ------------------------------------------------------------
+//      --> fetch crypto 2
+// ------------------------------------------------------------  
 void getPrice2(){
       String url = "https://api.coinbase.com/v2/prices/ETH-EUR/sell";
     Serial.print("-- Fetching data from: ");
