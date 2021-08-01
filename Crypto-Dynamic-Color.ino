@@ -132,6 +132,7 @@ Serial.println("------------------------------------------------------------");
 Serial.println("Moxl"); 
 Serial.println("Crypto Tracker + Clock");
 Serial.println("------------------------------------------------------------");
+Serial.println("");
 Serial.println("Setup started");
 Serial.println("setting up screen");
   tft.init();
@@ -154,7 +155,7 @@ Serial.println("Connecting to WiFi:");
 
   while ( WiFi.status() != WL_CONNECTED ) {
     delay ( 500 );
-    
+    Serial.print ( "." );
     tft.print ( "." );
   }
 
@@ -164,7 +165,7 @@ Serial.println("Connecting to WiFi:");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-
+  Serial.println("");
 // ------------------------------------------------------------
 //      --> Timeclient offset
 // ------------------------------------------------------------
@@ -216,8 +217,9 @@ void loop() {
     
    //get data only once every 1 minute
       if(timer >= (timepreviouscalc + timecalctimer)== true){
-        Serial.print("--> Starting loop 1 at ");
-        Serial.println(i);
+        Serial.print(i);
+        Serial.println(" - Starting loop 1");
+        
         timepreviouscalc = millis();
         getPrice();
         getPrice2();
@@ -226,8 +228,8 @@ void loop() {
 
     //Display Screen every 10 seconds
       if(timer2 >= (timepreviouscalc2 + timecalctimer2)== true){
-        Serial.print("--> Starting loop 2 at ");
-        Serial.println(i);
+        Serial.print(i);
+        Serial.println(" - Starting loop 2");
         timepreviouscalc2 = millis();
         printScreen();
         
@@ -321,11 +323,12 @@ void getPrice(){
         val=val + 3;
         price.remove(val, 3);
         ticker = price.toFloat();;
-        Serial.println(ticker);
+        Serial.println(Symbol + ": " + ticker);
         
       }else {
         Serial.println("Error on HTTP request");
       }
+Serial.println("");
 http.end();
 }
 // ------------------------------------------------------------
@@ -354,10 +357,11 @@ void getPrice2(){
         val=val + 3;
         price2.remove(val, 3);
         ticker2 = price2.toFloat();
-        Serial.println(ticker2);
+        Serial.println(Symbol2 + ": " + ticker2);
         
       }else {
         Serial.println("Error on HTTP request");
       }
 http.end();
+Serial.println("");
 }
