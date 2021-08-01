@@ -79,8 +79,8 @@ https://developers.coinbase.com/api/v2#prices
 TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
 
 //      --> Wifi Credentials
-const char *ssid     = "J-Unifi";
-const char *password = "passdraadloos";
+const char *ssid     = "SSID";
+const char *password = "password";
 WiFiUDP ntpUDP;
 HTTPClient http;
 
